@@ -13,5 +13,9 @@ in plugin development.
 docker run --name OpenMediaVault -ti -h openmediavault.example.test -v /path/to/data:/data:Z ikogan/openmediavault
 ```
 
+## Alternative Branches
+
+- extras: Includes omv-extras pre-installed
+
 Note, this is a work in progress and may not be functioning
 at the moment.
