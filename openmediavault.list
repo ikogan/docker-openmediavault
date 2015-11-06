@@ -1,1 +1,1 @@
-deb http://packages.openmediavault.org/public kralizec main
+deb http://packages.openmediavault.org/public stoneburner main# deb http://downloads.sourceforge.net/project/openmediavault/packages stoneburner main## This software is not part of OpenMediaVault, but is offered by third-party## developers as a service to OpenMediaVault users.deb http://packages.openmediavault.org/public stoneburner partner# deb http://downloads.sourceforge.net/project/openmediavault/packages stoneburner partner
