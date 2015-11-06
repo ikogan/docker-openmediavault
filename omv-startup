@@ -1,16 +1,35 @@
 #!/bin/bash
 
-if [ -z /data/etc ]; then
-    mkdir -p /data/etc
-    
-    mv /etc/openmediavault /data/etc
-    mv /etc/default /data/etc
+if [ ! -e /data/etc ] || [ ! -e /data/var ]; then
+    if [ ! -e /data/etc ]; then
+        echo Creating initial configuration...
 
-    ln -s /etc/openmediavault /data/etc/openmediavault
-    ln -s /etc/default /data/etc/default
+        mkdir -p /data/etc
+
+        mv /etc/openmediavault /data/etc
+        mv /etc/default /data/etc
+
+        ln -s /data/etc/openmediavault /etc/openmediavault
+        ln -s /data/etc/default /etc/default
+    fi
+
+    if [ ! -e /data/var ]; then
+        echo Creating persistent data directory...
+
+        mkdir /data/var
+
+        mv /var/log /data/var/log
+        mv /var/lib /data/var/lib
+
+        ln -s /data/var/log /var/log
+        ln -s /data/var/lib /var/lib
+    fi
+
+    echo Initializing OpenMediaVault...
+    omv-initsystem $(find /usr/share/openmediavault/initsystem ! -name '*rootfs' ! -name '*sysctl' -type f -printf "%f\n" | sort |  xargs)
 fi
 
-SERVICES="motd openmediavault php5-fpm rrdcached rsyslog sudo anacron ntp openmediavault-engined systat cron postfix nginx collectd rc.local monit watchdog"
+SERVICES="motd openmediavault php5-fpm rrdcached rsyslog sudo anacron ntp openmediavault-engined cron postfix nginx collectd rc.local monit"
 
 for EACH in ${SERVICES}; do
     service ${EACH} start

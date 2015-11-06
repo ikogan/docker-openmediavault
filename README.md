@@ -10,7 +10,7 @@ in plugin development.
   data directory
 
 ```
-docker run --name OpenMediaVault -ti -h openmediavault.example.test -v /path/to/data:/data:Z ikogan/openmediavault
+docker run --name OpenMediaVault -d -ti -h openmediavault.example.test -v /path/to/data:/data:Z -P ikogan/openmediavault
 ```
 
 ## Alternative Branches
