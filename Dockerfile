@@ -14,6 +14,8 @@ RUN chmod +x /usr/sbin/omv-startup
 
 RUN omv-initsystem $(find /usr/share/openmediavault/initsystem ! -name '*rootfs' -type f -printf "%f\n" | sort |  xargs)
 
+RUN wget http://omv-extras.org/openmediavault-omvextrasorg_latest_all.deb -O /tmp/omv-extras.deb; dpkg -i /tmp/omv-extras.deb; rm /tmp/omv-extras.deb; apt-get update
+
 EXPOSE 80 443
 
 VOLUME /data
