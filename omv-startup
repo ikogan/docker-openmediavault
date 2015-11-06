@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ -z /data/etc ]; then
+    mkdir -p /data/etc
+    
+    mv /etc/openmediavault /data/etc
+    mv /etc/default /data/etc
+
+    ln -s /etc/openmediavault /data/etc/openmediavault
+    ln -s /etc/default /data/etc/default
+fi
+
+SERVICES="motd openmediavault php5-fpm rrdcached rsyslog sudo anacron ntp openmediavault-engined systat cron postfix nginx collectd rc.local monit watchdog"
+
+for EACH in ${SERVICES}; do
+    service ${EACH} start
+done
+
+if [ -t 0 ]; then
+    /bin/bash
+else
+    while true; do
+        sleep 1000 & wait $!
+    done
+fi
