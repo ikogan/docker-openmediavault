@@ -88,6 +88,10 @@ for EACH in ${SERVICES}; do
     service ${EACH} start
 done
 
+if [[ -e /data/startup.sh ]]; then
+    /data/startup.sh
+fi
+
 if [ -t 0 ]; then
     /bin/bash
 else
