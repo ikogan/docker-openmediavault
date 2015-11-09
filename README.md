@@ -13,6 +13,18 @@ in plugin development.
 docker run --name OpenMediaVault -d -ti -h openmediavault.example.test -v /path/to/data:/data:Z -P ikogan/openmediavault
 ```
 
+## Configuration
+A configuration file can be placed at the root of the data
+directory called `container.ini` that will be used to configure
+various services on startup. Currently, the configuration supports
+the following options:
+
+```
+[nginx]
+httpPort="80"
+httpsPort="443"
+```
+
 ## Alternative Branches
 
 - extras: Includes omv-extras pre-installed

@@ -1,6 +1,38 @@
 #!/bin/bash
 
+# Config parser code from https://github.com/chilladx/config-parser
+config_parser () {
+    local iniFile="$1";
+    local tmpFile=$( mktemp /tmp/`basename $iniFile`.XXXXXX );
+    local intLines;
+    local binSED=$( which sed );
+
+    # copy the ini file to the temporary location
+    cp $iniFile $tmpFile;
+
+    # remove tabs or spaces around the =
+    $binSED -i -e 's/[ \t]*=[ \t]*/=/g' $tmpFile;
+
+    # transform section labels into function declaration
+    $binSED -i -e 's/\[\([A-Za-z0-9_]*\)\]/config.section.\1() \{/g' $tmpFile;
+    $binSED -i -e 's/config\.section\./\}\'$'\nconfig\.section\./g' $tmpFile;
+
+    # remove first line
+    $binSED -i -e '1d' $tmpFile;
+
+    # add the last brace
+    echo -e "\n}" >> $tmpFile;
+
+    # now load the file
+    source $tmpFile;
+
+    # clean up
+    rm -f $tmpFile;
+}
+
 if [ ! -e /data/etc ] || [ ! -e /data/var ]; then
+    FIRST_RUN=true
+
     if [ ! -e /data/etc ]; then
         echo Creating initial configuration...
 
@@ -8,9 +40,7 @@ if [ ! -e /data/etc ] || [ ! -e /data/var ]; then
 
         mv /etc/openmediavault /data/etc
         mv /etc/default /data/etc
-
-        ln -s /data/etc/openmediavault /etc/openmediavault
-        ln -s /data/etc/default /etc/default
+        mv /etc/nginx /data/etc
     fi
 
     if [ ! -e /data/var ]; then
@@ -19,14 +49,37 @@ if [ ! -e /data/etc ] || [ ! -e /data/var ]; then
         mkdir /data/var
 
         mv /var/log /data/var/log
-        mv /var/lib /data/var/lib
-
-        ln -s /data/var/log /var/log
-        ln -s /data/var/lib /var/lib
     fi
+else
+    FIRST_RUN=false
 
+    rm -Rf /etc/openmediavault
+    rm -Rf /etc/default
+    rm -Rf /etc/nginx
+
+    rm -Rf /var/log
+fi
+
+echo Linking in configuration and data...
+ln -s /data/etc/openmediavault /etc/openmediavault
+ln -s /data/etc/default /etc/default
+ln -s /data/etc/nginx /etc/nginx
+
+ln -s /data/var/log /var/log
+
+if [ "${FIRST_RUN}" = "true" ]; then
     echo Initializing OpenMediaVault...
     omv-initsystem $(find /usr/share/openmediavault/initsystem ! -name '*rootfs' ! -name '*sysctl' -type f -printf "%f\n" | sort |  xargs)
+fi
+
+if [[ -e /data/container.ini ]]; then
+    echo Reonfiguring system from external configuration...
+    config_parser "/data/container.ini"
+
+    config.section.nginx
+
+    sed -i "s|listen \(.*\):[0-9][0-9]* \(.*\)|listen \1:${httpPort} \2|g" /etc/nginx/sites-enabled/openmediavault-webgui
+    sed -i "s|listen \(.*\):[0-9][0-9]* \(.*\) ssl \(.*\)|:listen \1:${httpsPort} \2 ssl \3|g" /etc/nginx/sites-enabled/openmediavault-webgui
 fi
 
 SERVICES="motd openmediavault php5-fpm rrdcached rsyslog sudo anacron ntp openmediavault-engined cron postfix nginx collectd rc.local monit"

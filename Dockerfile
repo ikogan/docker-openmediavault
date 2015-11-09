@@ -12,6 +12,8 @@ RUN apt-get update -y; apt-get install openmediavault-keyring postfix locales -y
 RUN apt-get update -y; apt-get install openmediavault -y
 RUN chmod +x /usr/sbin/omv-startup
 
+ADD defaults/rrdcached /etc/default
+
 RUN apt-get install apt-transport-https; wget http://omv-extras.org/openmediavault-omvextrasorg_latest_all.deb -O /tmp/omv-extras.deb; dpkg -i /tmp/omv-extras.deb; rm /tmp/omv-extras.deb; apt-get update
 
 EXPOSE 80 443
