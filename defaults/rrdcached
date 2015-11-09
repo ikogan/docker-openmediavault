@@ -1,0 +1,20 @@
+# /etc/default/rrdcached
+
+# 0: start rrdcached on boot, 1: do not start rrdcached on boot
+# default: 0
+DISABLE=0
+
+# options to be passed to rrdcached
+# (do not specify -p <pidfile> - this is handled by the init script)
+# default: see /etc/init.d/rrdcached
+OPTS="-l unix:/var/run/rrdcached.sock -j /data/rrdcached/journal/ -F -b /data/rrdcached/db/ -B -w 900 -f 3600"
+
+# number of seconds to wait for rrdcached to shut down
+# (writing the data to disk may take some time;
+# tune this according to your setup)
+# default: 30
+MAXWAIT=30
+
+# 0: do not enable core-files, 1: enable core-files ... if rrdcached crashes
+# default: 0
+ENABLE_COREFILES=0
