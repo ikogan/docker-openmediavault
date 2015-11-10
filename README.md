@@ -21,10 +21,14 @@ the following options:
 
 ```
 [nginx]
-httpPort="80"
-httpsPort="443"
+httpPort="80";
+httpsPort="443";
+
+[data]
+alwaysClear="false";
 ```
 
 ## Alternative Branches
 
 - extras: Includes omv-extras pre-installed
+- dev: Includes extras and development plugin

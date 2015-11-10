@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Config parser code from https://github.com/chilladx/config-parser
 config_parser () {
     local iniFile="$1";
@@ -29,6 +31,19 @@ config_parser () {
     # clean up
     rm -f $tmpFile;
 }
+
+if [ -e /data/container.ini ]; then
+    config_parser "/data/container.ini"
+fi
+
+config.section.data
+
+if [ "${alwaysClear}" = "true" ]; then
+    echo Clearing data because config says so...
+
+    rm -Rf /data/etc
+    rm -Rf /data/var
+fi
 
 if [ ! -e /data/etc ] || [ ! -e /data/var ]; then
     FIRST_RUN=true
@@ -72,13 +87,12 @@ if [ "${FIRST_RUN}" = "true" ]; then
     omv-initsystem $(find /usr/share/openmediavault/initsystem ! -name '*rootfs' ! -name '*sysctl' -type f -printf "%f\n" | sort |  xargs)
 fi
 
-if [[ -e /data/container.ini ]]; then
-    echo Reonfiguring system from external configuration...
-    config_parser "/data/container.ini"
-
-    config.section.nginx
-
+config.section.nginx
+if [ ! -z "${httpPort}" ]; then
     sed -i "s|listen \(.*\):[0-9][0-9]* \(.*\)|listen \1:${httpPort} \2|g" /etc/nginx/sites-enabled/openmediavault-webgui
+fi
+
+if [ ! -z "${httpsPort}" ]; then
     sed -i "s|listen \(.*\):[0-9][0-9]* \(.*\) ssl \(.*\)|:listen \1:${httpsPort} \2 ssl \3|g" /etc/nginx/sites-enabled/openmediavault-webgui
 fi
 
