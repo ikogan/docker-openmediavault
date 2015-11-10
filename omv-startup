@@ -30,6 +30,20 @@ config_parser () {
     rm -f $tmpFile;
 }
 
+if [ -e /data/container.ini ]; then
+    config_parser "/data/container.ini"
+fi
+
+if [ ! -z "${config.section.data}" ]; then 
+    config.section.data
+    
+    if [ "${alwaysClear}" -eq "true" ]; then
+        echo Clearing data because config says so...
+    
+        rm -Rf /data/*
+    fi
+fi
+
 if [ ! -e /data/etc ] || [ ! -e /data/var ]; then
     FIRST_RUN=true
 
@@ -72,9 +86,8 @@ if [ "${FIRST_RUN}" = "true" ]; then
     omv-initsystem $(find /usr/share/openmediavault/initsystem ! -name '*rootfs' ! -name '*sysctl' -type f -printf "%f\n" | sort |  xargs)
 fi
 
-if [[ -e /data/container.ini ]]; then
-    echo Reonfiguring system from external configuration...
-    config_parser "/data/container.ini"
+if [[ ! -z "${config.section.nginx}" ]]; then
+    echo Configuring nginx...
 
     config.section.nginx
 
