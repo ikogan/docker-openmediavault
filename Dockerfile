@@ -3,7 +3,7 @@ FROM debian:wheezy
 MAINTAINER Ilya Kogan <ikogan@flarecode.com>
 
 # Add the OpenMediaVault repository
-ADD openmediavault.list /etc/apt/sources.list.d/
+COPY openmediavault.list /etc/apt/sources.list.d/
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -15,11 +15,11 @@ RUN apt-get update -y; apt-get install openmediavault-keyring postfix locales -y
 RUN apt-get update -y; apt-get install openmediavault -y
 
 # We need to make sure rrdcached uses /data for it's data
-ADD defaults/rrdcached /etc/default
+COPY defaults/rrdcached /etc/default
 
 # Add our startup script last because we don't want changes
 # to it to require a full container rebuild
-ADD omv-startup /usr/sbin/omv-startup
+COPY omv-startup /usr/sbin/omv-startup
 RUN chmod +x /usr/sbin/omv-startup
 
 EXPOSE 80 443
