@@ -84,6 +84,7 @@ ln -s /data/var/log /var/log
 
 if [ "${FIRST_RUN}" = "true" ]; then
     echo Initializing OpenMediaVault...
+    sed 's/OMV_DEBUG_\(.*\)=.*/OMV_DEBUG_\1="yes"/' -i /etc/default/openmediavault 
     omv-initsystem $(find /usr/share/openmediavault/initsystem ! -name '*rootfs' ! -name '*sysctl' -type f -printf "%f\n" | sort |  xargs)
 fi
 
