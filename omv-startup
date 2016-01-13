@@ -84,17 +84,17 @@ ln -s /data/var/log /var/log
 
 if [ "${FIRST_RUN}" = "true" ]; then
     echo Initializing OpenMediaVault...
-    sed 's/OMV_DEBUG_\(.*\)=.*/OMV_DEBUG_\1="yes"/' -i /etc/default/openmediavault 
+    sed 's/OMV_DEBUG_\(.*\)=.*/OMV_DEBUG_\1="yes"/' -i /etc/default/openmediavault
     omv-initsystem $(find /usr/share/openmediavault/initsystem ! -name '*rootfs' ! -name '*sysctl' -type f -printf "%f\n" | sort |  xargs)
 fi
 
 config.section.nginx
 if [ ! -z "${httpPort}" ]; then
-    sed -i "s|listen \(.*\):[0-9][0-9]* \(.*\)|listen \1:${httpPort} \2|g" /etc/nginx/sites-enabled/openmediavault-webgui
+    sed -i "s|listen \(.*\):[0-9][0-9]* \(.*\)|listen \1:${httpPort} \2|g" /etc/nginx/sites-available/openmediavault-webgui
 fi
 
 if [ ! -z "${httpsPort}" ]; then
-    sed -i "s|listen \(.*\):[0-9][0-9]* \(.*\) ssl \(.*\)|:listen \1:${httpsPort} \2 ssl \3|g" /etc/nginx/sites-enabled/openmediavault-webgui
+    sed -i "s|listen \(.*\):[0-9][0-9]* \(.*\) ssl \(.*\)|:listen \1:${httpsPort} \2 ssl \3|g" /etc/nginx/sites-available/openmediavault-webgui
 fi
 
 SERVICES="motd openmediavault php5-fpm rrdcached rsyslog sudo anacron ntp openmediavault-engined cron postfix nginx collectd rc.local monit"

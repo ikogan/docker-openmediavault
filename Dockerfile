@@ -28,7 +28,7 @@ RUN omv-config -m //system/omvextrasorg/beta "1"; omv-mkconf omvextrasorg; apt-g
 COPY omv-startup /usr/sbin/omv-startup
 RUN chmod +x /usr/sbin/omv-startup
 
-EXPOSE 80 443
+EXPOSE 8080 8443
 
 VOLUME /data
 
