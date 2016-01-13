@@ -25,7 +25,7 @@ RUN apt-get install apt-transport-https; wget http://omv-extras.org/openmediavau
 COPY omv-startup /usr/sbin/omv-startup
 RUN chmod +x /usr/sbin/omv-startup
 
-EXPOSE 80 443
+EXPOSE 8080 8443
 
 VOLUME /data
 
