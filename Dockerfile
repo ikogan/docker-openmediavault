@@ -20,6 +20,9 @@ COPY defaults/rrdcached /etc/default
 # Install omv-extras
 RUN apt-get install apt-transport-https; wget http://omv-extras.org/openmediavault-omvextrasorg_latest_all.deb -O /tmp/omv-extras.deb; dpkg -i /tmp/omv-extras.deb; rm /tmp/omv-extras.deb; apt-get update
 
+# Install the plugin development tools
+RUN omv-config -m //system/omvextrasorg/beta "1"; omv-mkconf omvextrasorg; apt-get install -y openmediavault-developer vim
+
 # Add our startup script last because we don't want changes
 # to it to require a full container rebuild
 COPY omv-startup /usr/sbin/omv-startup
