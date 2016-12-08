@@ -1,3 +1,5 @@
+[![](https://images.microbadger.com/badges/image/ikogan/openmediavault.svg)](https://microbadger.com/images/ikogan/openmediavault "Get your own image badge on microbadger.com")
+
 # OpenMediaVault Docker Container
 
 Basic Docker container for OpenMediaVault primarily useful
@@ -77,11 +79,11 @@ FSPATH="${1}"
 FSNAME="${2}"
 
 if [[ -z "${FSPATH}" || -z "${FSNAME}" ]]; then
-    echo "Usage: ${0} <fspath> <fsname>
+    echo "Usage: ${0} <fspath> <fsname>"
     exit 1
 fi
 
-mkdir -p "${FSPATH"} || true
+mkdir -p "${FSPATH}" || true
 
 MNT_ENT_XPATH="/config/system/fstab/mntent"
 SHARE_XPATH="/config/system/shares/sharedfolder"
