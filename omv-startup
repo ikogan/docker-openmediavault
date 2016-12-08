@@ -100,7 +100,7 @@ fi
 SERVICES="motd openmediavault php5-fpm rrdcached rsyslog sudo anacron ntp openmediavault-engined cron postfix nginx collectd rc.local monit"
 
 for EACH in ${SERVICES}; do
-    service ${EACH} start
+    /etc/init.d/${EACH} start
 done
 
 if [[ -e /data/startup.sh ]]; then
