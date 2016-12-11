@@ -36,7 +36,9 @@ if [ -e /data/container.ini ]; then
     config_parser "/data/container.ini"
 fi
 
-config.section.data
+if [[ "$(type -t config.section.data)" == "function" ]]; then
+    config.section.data
+fi
 
 if [ "${alwaysClear}" = "true" ]; then
     echo Clearing data because config says so...
@@ -88,7 +90,10 @@ if [ "${FIRST_RUN}" = "true" ]; then
     omv-initsystem $(find /usr/share/openmediavault/initsystem ! -name '*rootfs' ! -name '*sysctl' -type f -printf "%f\n" | sort |  xargs)
 fi
 
-config.section.nginx
+if [[ "$(type -t config.section.nginx)" == "function" ]]; then
+    config.section.nginx
+fi
+
 if [ ! -z "${httpPort}" ]; then
     sed -i "s|listen \(.*\):[0-9][0-9]* \(.*\)|listen \1:${httpPort} \2|g" /etc/nginx/sites-available/openmediavault-webgui
 fi
