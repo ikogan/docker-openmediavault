@@ -75,6 +75,8 @@ device. You'll need to use the OMV command line tools to set this up:
 /bin/bash
 set -e
 
+. /usr/share/openmediavault/scripts/helper-functions
+
 FSPATH="${1}"
 FSNAME="${2}"
 
