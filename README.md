@@ -72,7 +72,7 @@ folder that's simply a directory on the filesystem, and isn't bound to a block
 device. You'll need to use the OMV command line tools to set this up:
 
 ```sh
-/bin/bash
+#!/bin/bash
 set -e
 
 FSPATH="${1}"
