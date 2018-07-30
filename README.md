@@ -1,4 +1,4 @@
-[![](https://images.microbadger.com/badges/image/ikogan/openmediavault.svg)](https://microbadger.com/images/ikogan/openmediavault "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/ikogan/openmediavault.svg)](https://microbadger.com/images/ikogan/openmediavault "Get your own image badge on microbadger.com") [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 # OpenMediaVault Docker Container
 
