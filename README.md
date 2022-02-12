@@ -5,7 +5,7 @@
 Basic Docker container for OpenMediaVault primarily useful
 in plugin development.
 
-- Expose ports 8080 and 8443 by default
+- Expose ports 80 and 443 by default
 - Data directory should be in /data and will contain
   /etc/openmediavault, /etc/default, /var/log, and /var/lib
 - First run will copy installed config files into the
