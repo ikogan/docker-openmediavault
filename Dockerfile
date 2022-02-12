@@ -22,7 +22,7 @@ COPY defaults/rrdcached /etc/default
 COPY omv-startup /usr/sbin/omv-startup
 RUN chmod +x /usr/sbin/omv-startup
 
-EXPOSE 8080 8443
+EXPOSE 80 443
 
 VOLUME /data
 
